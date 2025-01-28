@@ -317,7 +317,6 @@ func generateJMXConfiguration(jmxConf api.JMXConfiguration) v1.EnvVar {
 			jmxParam += param
 		}
 	}
-	jmxParam += "-Dcassandra.jmx.remote.port=7199"
 	logrus.Errorf("FINAL JMX PARAMS: ", jmxParam)
 	jmxEnvVar = v1.EnvVar{Name: jvmOptsName, Value: jmxParam}
 
