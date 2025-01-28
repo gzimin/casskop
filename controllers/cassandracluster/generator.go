@@ -963,6 +963,7 @@ func createCassandraContainer(cc *api.CassandraCluster, status *api.CassandraClu
 	})
 
 	if cc.Spec.JMXConfiguration != nil {
+		logrus.Errorf("cc.Spec.JMXCONF  %v\n", cc.Spec)
 		logrus.Errorf("cc.Spec.JMXCONF  %v\n", cc.Spec.JMXConfiguration)
 		jmxEnvVariable := generateJMXConfiguration(*cc.Spec.JMXConfiguration)
 		cassandraEnv = append(cassandraEnv, jmxEnvVariable)
