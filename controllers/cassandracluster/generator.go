@@ -317,7 +317,6 @@ func generateJMXConfiguration(jmxConf api.JMXConfiguration) v1.EnvVar {
 			jmxParam += param
 		}
 	}
-	logrus.Errorf("FINAL JMX PARAMS: ", jmxParam)
 	jmxEnvVar = v1.EnvVar{Name: jvmOptsName, Value: jmxParam}
 
 	return jmxEnvVar
@@ -963,8 +962,6 @@ func createCassandraContainer(cc *api.CassandraCluster, status *api.CassandraClu
 	})
 
 	if cc.Spec.JMXConfiguration != nil {
-		logrus.Errorf("cc.Spec.JMXCONF  %v\n", cc.Spec)
-		logrus.Errorf("cc.Spec.JMXCONF  %v\n", cc.Spec.JMXConfiguration)
 		jmxEnvVariable := generateJMXConfiguration(*cc.Spec.JMXConfiguration)
 		cassandraEnv = append(cassandraEnv, jmxEnvVariable)
 	}
