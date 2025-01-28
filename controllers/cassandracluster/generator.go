@@ -307,17 +307,17 @@ func generateVolumeClaimTemplate(cc *api.CassandraCluster, labels map[string]str
 func generateJMXConfiguration(jmxConf api.JMXConfiguration) v1.EnvVar {
 	var jmxEnvVar v1.EnvVar
 	var jmxParam string
-	values := reflect.ValueOf(jmxConf)
-	types := reflect.TypeOf(jmxConf)
+	values := reflect.ValueOf(jmxConf).Elem()
+	types := reflect.TypeOf(jmxConf).Elem()
 	logrus.Errorf("INITIAL JMX CONFIGURATION %v\n", jmxConf)
 	logrus.Errorf("INITIAL VALUE: ", values)
 	for i := 0; i < values.NumField(); i++ {
-		fieldName := types.Field(i).Name
-		fieldValue := values.Field(i).Interface()
+		fieldName := types.Field(i)
+		fieldValue := values.Field(i)
 		logrus.Errorf("Field Name: ", fieldName)
 		logrus.Errorf("Field Value: ", fieldValue)
-		if fieldValue != nil {
-			param := JMXConfigurationMap[fieldName] + fmt.Sprintf("%v", fieldValue) + " "
+		if !fieldValue.IsNil() {
+			param := JMXConfigurationMap[fieldName.Name] + fmt.Sprintf("%v", fieldValue.Elem()) + " "
 			jmxParam += param
 		}
 	}
