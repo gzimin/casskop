@@ -243,10 +243,8 @@ spec:
                     jmxRemoteAuthenticate:
                       type: boolean
                     jmxRemoteEnable:
-                      description: Flag to tell that JMX remote is enabled
                       type: boolean
                     jmxRemotePort:
-                      description: JMX Remote port number
                       type: integer
                     jmxRemoteSSL:
                       type: boolean

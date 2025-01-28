@@ -822,10 +822,10 @@ type CassandraClusterSpec struct {
 
 // JMXConfiguration defines Cassandra JMX variables configuration
 type JMXConfiguration struct {
-	JMXRemote             bool `json:"jmxRemoteEnable,omitempty"`
-	JMXRemotePort         int  `json:"jmxRemotePort,omitempty"`
-	JXMRemoteSSL          bool `json:"jmxRemoteSSL,omitempty"`
-	JMXRemoteAuthenticate bool `json:"jmxRemoteAuthenticate,omitempty"`
+	JMXRemote             *bool `json:"jmxRemoteEnable,omitempty"`
+	JMXRemotePort         *int  `json:"jmxRemotePort,omitempty"`
+	JXMRemoteSSL          *bool `json:"jmxRemoteSSL,omitempty"`
+	JMXRemoteAuthenticate *bool `json:"jmxRemoteAuthenticate,omitempty"`
 }
 
 // StorageConfig defines additional storage configurations
