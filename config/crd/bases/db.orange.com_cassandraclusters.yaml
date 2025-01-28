@@ -247,16 +247,16 @@ spec:
                   properties:
                     jmxRemoteAuthenticate:
                       description: JMXRemoteAuthenticate defines authentication for JMX remote connections
-                      type: boolean
+                      type: string
                     jmxRemoteEnable:
                       description: JMXRemote defines is JMX remote enabled
-                      type: boolean
+                      type: string
                     jmxRemotePort:
                       description: JMXRemotePort defines the Remote Method Invocation port for the JMX connection
-                      type: integer
+                      type: string
                     jmxRemoteSSL:
                       description: JXMRemoteSSL defines is SSL for JMX connections enabled or not
-                      type: boolean
+                      type: string
                 keyspaceCleanupThreads:
                   description: |-
                     Number of jobs (threads) for keyspace cleanup command.
