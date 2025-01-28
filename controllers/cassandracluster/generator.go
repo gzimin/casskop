@@ -309,6 +309,8 @@ func generateJMXConfiguration(jmxConf api.JMXConfiguration) v1.EnvVar {
 	var jmxParam string
 	values := reflect.ValueOf(jmxConf)
 	types := reflect.TypeOf(jmxConf)
+	logrus.Errorf("ALL VALUES: ", values)
+	logrus.Errorf("ALL TYPES: ", values)
 	for i := 0; i < values.NumField(); i++ {
 		fieldName := types.Field(i)
 		fieldValue := values.Field(i)
@@ -317,6 +319,7 @@ func generateJMXConfiguration(jmxConf api.JMXConfiguration) v1.EnvVar {
 			jmxParam += param
 		}
 	}
+	logrus.Errorf("FINAL JMX PARAM", jmxParam)
 	jmxEnvVar = v1.EnvVar{Name: jvmOptsName, Value: jmxParam}
 
 	return jmxEnvVar
