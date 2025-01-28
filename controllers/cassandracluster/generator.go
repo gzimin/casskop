@@ -306,7 +306,7 @@ func generateVolumeClaimTemplate(cc *api.CassandraCluster, labels map[string]str
 
 func generateJMXConfiguration(jmxConf api.JMXConfiguration) v1.EnvVar {
 	var jmxEnvVar v1.EnvVar
-	var jmxParam string
+	jmxParam := "LOCAL_JMX=no"
 	values := reflect.ValueOf(&jmxConf).Elem()
 	types := reflect.TypeOf(&jmxConf).Elem()
 	logrus.Errorf("INITIAL JMX CONFIGURATION %v\n", jmxConf)
@@ -969,7 +969,6 @@ func createCassandraContainer(cc *api.CassandraCluster, status *api.CassandraClu
 		logrus.Errorf("cc.Spec.JMXCONF  %v\n", cc.Spec)
 		logrus.Errorf("cc.Spec.JMXCONF  %v\n", cc.Spec.JMXConfiguration)
 		jmxEnvVariable := generateJMXConfiguration(*cc.Spec.JMXConfiguration)
-		testVar := v1.EnvVar{Name: , Value: jmxParam}
 		cassandraEnv = append(cassandraEnv, jmxEnvVariable)
 	}
 	cassandraContainer := v1.Container{
