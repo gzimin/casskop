@@ -82,7 +82,7 @@ const (
 // Create a JMX Configuration map to convert values from CR to how they look like as env vars
 var JMXConfigurationMap = map[string]string{
 	"JMXRemote":             "-Dcom.sun.management.jmxremote=",
-	"JMXRemotePort":         "-Dcom.sun.management.jmxremote.port=",
+	"JMXRemotePort":         "-Dcom.sun.management.jmxremote.rmi.port=",
 	"JXMRemoteSSL":          "-Dcom.sun.management.jmxremote.ssl=",
 	"JMXRemoteAuthenticate": "-Dcom.sun.management.jmxremote.authenticate=",
 }
@@ -306,16 +306,12 @@ func generateVolumeClaimTemplate(cc *api.CassandraCluster, labels map[string]str
 
 func generateJMXConfiguration(jmxConf api.JMXConfiguration) v1.EnvVar {
 	var jmxEnvVar v1.EnvVar
-	jmxParam := "-Dcom.sun.management.jmxremote.rmi.port=7199 "
+	var jmxParam string
 	values := reflect.ValueOf(&jmxConf).Elem()
 	types := reflect.TypeOf(&jmxConf).Elem()
-	logrus.Errorf("INITIAL JMX CONFIGURATION %v\n", jmxConf)
-	logrus.Errorf("INITIAL VALUE: ", values)
 	for i := 0; i < values.NumField(); i++ {
 		fieldName := types.Field(i)
 		fieldValue := values.Field(i)
-		logrus.Errorf("Field Name: ", fieldName)
-		logrus.Errorf("Field Value: ", fieldValue)
 		if !fieldValue.IsNil() {
 			param := JMXConfigurationMap[fieldName.Name] + fmt.Sprintf("%v", fieldValue.Elem()) + " "
 			jmxParam += param
