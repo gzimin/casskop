@@ -824,7 +824,7 @@ type CassandraClusterSpec struct {
 type JMXConfiguration struct {
 	// JMXRemote defines is JMX remote enabled
 	JMXRemote *bool `json:"jmxRemoteEnable,omitempty"`
-	// JMXRemotePort defines the Remote Method Invocation port for the JMX connection
+	// JMXRemotePort defines port that the JMX agent will use to listen for incoming JMX connections
 	JMXRemotePort int `json:"jmxRemotePort,omitempty"`
 	// JXMRemoteRmiPort defines Remote Method Invocation port for the JMX connection
 	JMXRemoteRmiPort int `json:"jmxRemoteRmiPort,omitempty"`

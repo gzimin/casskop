@@ -247,7 +247,7 @@ spec:
                       description: JMXRemote defines is JMX remote enabled
                       type: boolean
                     jmxRemotePort:
-                      description: JMXRemotePort defines the Remote Method Invocation port for the JMX connection
+                      description: JMXRemotePort defines port that the JMX agent will use to listen for incoming JMX connections
                       type: integer
                     jmxRemoteRmiPort:
                       description: JXMRemoteRmiPort defines Remote Method Invocation port for the JMX connection
