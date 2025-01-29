@@ -1,0 +1,1 @@
+remark.macros.scale=function(r){return'<img src="'+this+'" style="width: '+r+'" />'};
