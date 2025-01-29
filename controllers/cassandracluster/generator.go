@@ -17,10 +17,9 @@ package cassandracluster
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
-
 	"github.com/Jeffail/gabs"
 	"github.com/banzaicloud/k8s-objectmatcher/patch"
+	"reflect"
 
 	"github.com/sirupsen/logrus"
 	appsv1 "k8s.io/api/apps/v1"
@@ -67,6 +66,7 @@ const (
 	cassandraConfigMapName = "cassandra-config"
 	defaultBackRestPort    = 4567
 	jvmOptsName            = "JVM_OPTS"
+	jmxRemoteParamPrefix   = "-Dcom.sun.management.jmxremote"
 )
 
 type containerType int
@@ -82,7 +82,8 @@ const (
 // Create a JMX Configuration map to convert values from CR to how they look like as env vars
 var JMXConfigurationMap = map[string]string{
 	"JMXRemote":             "-Dcom.sun.management.jmxremote=",
-	"JMXRemotePort":         "-Dcom.sun.management.jmxremote.rmi.port=",
+	"JMXRemotePort":         "-Dcom.sun.management.jmxremote.port=",
+	"JMXRemoteRmiPort":      "-Dcom.sun.management.jmxremote.rmi.port=",
 	"JXMRemoteSSL":          "-Dcom.sun.management.jmxremote.ssl=",
 	"JMXRemoteAuthenticate": "-Dcom.sun.management.jmxremote.authenticate=",
 }
@@ -309,17 +310,15 @@ func generateJMXConfiguration(jmxConf api.JMXConfiguration) v1.EnvVar {
 	var jmxParam string
 	values := reflect.ValueOf(jmxConf)
 	types := reflect.TypeOf(jmxConf)
-	logrus.Errorf("ALL VALUES: ", values)
-	logrus.Errorf("ALL TYPES: ", values)
 	for i := 0; i < values.NumField(); i++ {
 		fieldName := types.Field(i)
 		fieldValue := values.Field(i)
-		if fieldValue.String() != "" {
-			param := JMXConfigurationMap[fieldName.Name] + fieldValue.String() + " "
+		if !fieldValue.IsNil() {
+			param := JMXConfigurationMap[fieldName.Name] + fmt.Sprintf("%v", fieldValue) + " "
 			jmxParam += param
 		}
 	}
-	logrus.Errorf("FINAL JMX PARAM", jmxParam)
+	logrus.Errorf("FINAL JMX PARAMS: ", jmxParam)
 	jmxEnvVar = v1.EnvVar{Name: jvmOptsName, Value: jmxParam}
 
 	return jmxEnvVar
