@@ -26,6 +26,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
+	"reflect"
 
 	api "github.com/cscetbon/casskop/api/v2"
 
@@ -306,19 +307,17 @@ func generateVolumeClaimTemplate(cc *api.CassandraCluster, labels map[string]str
 func generateJMXConfiguration(jmxConf api.JMXConfiguration) v1.EnvVar {
 	var jmxEnvVar v1.EnvVar
 	var jmxParam string
-	if jmxConf.JMXRemote == true {
-		// Set params only when JMX Remote is enabled
-		jmxParam += JMXConfigurationMap["JMXRemote"] + strconv.FormatBool(jmxConf.JMXRemote) + " "
-		if jmxConf.JMXRemotePort != 0 {
-			jmxParam += JMXConfigurationMap["JMXRemotePort"] + strconv.Itoa(jmxConf.JMXRemotePort) + " "
+	values := reflect.ValueOf(&jmxConf).Elem()
+	types := reflect.TypeOf(&jmxConf).Elem()
+	for i := 0; i < values.NumField(); i++ {
+		fieldName := types.Field(i)
+		fieldValue := values.Field(i)
+		if !fieldValue.IsNil() {
+			param := JMXConfigurationMap[fieldName.Name] + fmt.Sprintf("%v", fieldValue.Elem()) + " "
+			jmxParam += param
 		}
-		if jmxConf.JMXRemoteRmiPort != 0 {
-			jmxParam += JMXConfigurationMap["JMXRemoteRmiPort"] + strconv.Itoa(jmxConf.JMXRemoteRmiPort) + " "
-		}
-		jmxParam += JMXConfigurationMap["JXMRemoteSSL"] + strconv.FormatBool(jmxConf.JXMRemoteSSL) + " "
-		jmxParam += JMXConfigurationMap["JMXRemoteAuthenticate"] + strconv.FormatBool(jmxConf.JMXRemoteAuthenticate) + " "
-		jmxEnvVar = v1.EnvVar{Name: jvmOptsName, Value: jmxParam}
 	}
+	jmxEnvVar = v1.EnvVar{Name: jvmOptsName, Value: jmxParam}
 	return jmxEnvVar
 }
 

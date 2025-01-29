@@ -239,14 +239,10 @@ spec:
                 jmxConfiguration:
                   description: JMXConfiguration defines Cassandra JMX variables configuration
                   type: object
-                  required:
-                    - jmxRemoteAuthenticate
-                    - jmxRemoteSSL
                   properties:
                     jmxRemoteAuthenticate:
                       description: JMXRemoteAuthenticate defines authentication for JMX remote connections
                       type: boolean
-                      default: true
                     jmxRemoteEnable:
                       description: JMXRemote defines is JMX remote enabled
                       type: boolean
@@ -259,7 +255,6 @@ spec:
                     jmxRemoteSSL:
                       description: JXMRemoteSSL defines is SSL for JMX connections enabled or not
                       type: boolean
-                      default: true
                 keyspaceCleanupThreads:
                   description: |-
                     Number of jobs (threads) for keyspace cleanup command.
