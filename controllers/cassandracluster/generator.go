@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"github.com/Jeffail/gabs"
 	"github.com/banzaicloud/k8s-objectmatcher/patch"
+	api "github.com/cscetbon/casskop/api/v2"
 	"github.com/sirupsen/logrus"
 	appsv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
@@ -26,9 +27,6 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
-	"reflect"
-
-	api "github.com/cscetbon/casskop/api/v2"
 
 	"github.com/cscetbon/casskop/pkg/k8s"
 
@@ -307,15 +305,20 @@ func generateVolumeClaimTemplate(cc *api.CassandraCluster, labels map[string]str
 func generateJMXConfiguration(jmxConf api.JMXConfiguration) v1.EnvVar {
 	var jmxEnvVar v1.EnvVar
 	var jmxParam string
-	values := reflect.ValueOf(&jmxConf).Elem()
-	types := reflect.TypeOf(&jmxConf).Elem()
-	for i := 0; i < values.NumField(); i++ {
-		fieldName := types.Field(i)
-		fieldValue := values.Field(i)
-		if !fieldValue.IsNil() {
-			param := JMXConfigurationMap[fieldName.Name] + fmt.Sprintf("%v", fieldValue.Elem()) + " "
-			jmxParam += param
-		}
+	if jmxConf.JMXRemote != nil {
+		jmxParam += JMXConfigurationMap["JMXRemote"] + strconv.FormatBool(*jmxConf.JMXRemote) + " "
+	}
+	if jmxConf.JXMRemoteSSL != nil {
+		jmxParam += JMXConfigurationMap["JXMRemoteSSL"] + strconv.FormatBool(*jmxConf.JXMRemoteSSL) + " "
+	}
+	if jmxConf.JMXRemoteAuthenticate != nil {
+		jmxParam += JMXConfigurationMap["JMXRemoteAuthenticate"] + strconv.FormatBool(*jmxConf.JMXRemoteAuthenticate) + " "
+	}
+	if jmxConf.JMXRemotePort != 0 {
+		jmxParam += JMXConfigurationMap["JMXRemotePort"] + strconv.Itoa(jmxConf.JMXRemotePort) + " "
+	}
+	if jmxConf.JMXRemoteRmiPort != 0 {
+		jmxParam += JMXConfigurationMap["JMXRemoteRmiPort"] + strconv.Itoa(jmxConf.JMXRemoteRmiPort) + " "
 	}
 	jmxEnvVar = v1.EnvVar{Name: jvmOptsName, Value: jmxParam}
 	return jmxEnvVar
@@ -960,7 +963,7 @@ func createCassandraContainer(cc *api.CassandraCluster, status *api.CassandraClu
 		Value: "-Dcom.sun.jndi.rmiURLParsing=legacy",
 	})
 
-	if cc.Spec.JMXConfiguration != nil {
+	if cc.Spec.JMXConfiguration != nil && cc.Spec.JMXConfiguration.JMXRemote != nil {
 		jmxEnvVariable := generateJMXConfiguration(*cc.Spec.JMXConfiguration)
 		if jmxEnvVariable.Value != "" {
 			cassandraEnv = append(cassandraEnv, jmxEnvVariable)
