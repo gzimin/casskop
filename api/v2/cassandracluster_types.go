@@ -829,9 +829,9 @@ type JMXConfiguration struct {
 	// JXMRemoteRmiPort defines Remote Method Invocation port for the JMX connection
 	JMXRemoteRmiPort int `json:"jmxRemoteRmiPort,omitempty"`
 	// JXMRemoteSSL defines is SSL for JMX connections enabled or not
-	JXMRemoteSSL bool `json:"jmxRemoteSSL,omitempty"`
+	JXMRemoteSSL bool `json:"jmxRemoteSSL"`
 	// JMXRemoteAuthenticate defines authentication for JMX remote connections
-	JMXRemoteAuthenticate bool `json:"jmxRemoteAuthenticate,omitempty"`
+	JMXRemoteAuthenticate bool `json:"jmxRemoteAuthenticate"`
 }
 
 // StorageConfig defines additional storage configurations

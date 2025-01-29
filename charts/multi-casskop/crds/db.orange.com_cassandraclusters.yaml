@@ -239,6 +239,9 @@ spec:
                 jmxConfiguration:
                   description: JMXConfiguration defines Cassandra JMX variables configuration
                   type: object
+                  required:
+                    - jmxRemoteAuthenticate
+                    - jmxRemoteSSL
                   properties:
                     jmxRemoteAuthenticate:
                       description: JMXRemoteAuthenticate defines authentication for JMX remote connections
