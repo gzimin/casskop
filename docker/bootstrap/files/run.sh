@@ -102,8 +102,8 @@ if [[ $CASSANDRA_EXPORTER_AGENT == 'true' ]]
 then
     cat  <<EOF >>$CASSANDRA_CONF/cassandra-env.sh
 
-# Prometheus exporter from Instaclustr
-JVM_OPTS="\$JVM_OPTS -javaagent:/extra-lib/cassandra-exporter-agent.jar=@/etc/cassandra/exporter.conf"
+# Prometheus JMX Exporter
+JVM_OPTS="\$JVM_OPTS -javaagent:/extra-lib/cassandra-exporter-agent-0.9.16.jar=@/etc/cassandra/exporter.conf"
 EOF
 
 fi
