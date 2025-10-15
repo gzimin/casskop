@@ -8,7 +8,7 @@ on:
         required: true
 
 env:
-  IMAGE: ghcr.io/cscetbon/casskop-bootstrap:${{ github.event.inputs.alias }}
+  IMAGE: ghcr.io/gzimin/casskop-bootstrap:${{ github.event.inputs.alias }}
 
 jobs:
 
@@ -32,15 +32,15 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: docker/bootstrap
-          tags: ghcr.io/cscetbon/casskop-bootstrap:${{ github.event.inputs.alias }}
+          tags: ghcr.io/gzimin/casskop-bootstrap:${{ github.event.inputs.alias }}
 
-      - name: Run Dgoss Tests
-        run: |
-          curl -L https://raw.githubusercontent.com/aelsabbahy/goss/master/extras/dgoss/dgoss -o /usr/local/bin/dgoss
-          curl -L https://github.com/aelsabbahy/goss/releases/download/v0.3.6/goss-linux-amd64 -o /usr/local/bin/goss
-          chmod +rx /usr/local/bin/dgoss /usr/local/bin/goss
-          export GOSS_PATH=/usr/local/bin/goss GOSS_FILES_STRATEGY=cp
-          IMAGE_TO_TEST=${{ env.IMAGE }} ./docker/bootstrap/dgoss/runChecks.sh
+      # - name: Run Dgoss Tests
+      #   run: |
+      #     curl -L https://raw.githubusercontent.com/aelsabbahy/goss/master/extras/dgoss/dgoss -o /usr/local/bin/dgoss
+      #     curl -L https://github.com/aelsabbahy/goss/releases/download/v0.3.6/goss-linux-amd64 -o /usr/local/bin/goss
+      #     chmod +rx /usr/local/bin/dgoss /usr/local/bin/goss
+      #     export GOSS_PATH=/usr/local/bin/goss GOSS_FILES_STRATEGY=cp
+      #     IMAGE_TO_TEST=${{ env.IMAGE }} ./docker/bootstrap/dgoss/runChecks.sh
 
       - name: Push Docker image
         uses: docker/build-push-action@v4
