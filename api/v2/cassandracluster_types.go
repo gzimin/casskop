@@ -21,7 +21,7 @@ const (
 	DefaultReadinessHealthCheckPeriod   int32 = 10
 
 	defaultCassandraImage     = "cassandra:3.11.10"
-	defaultBootstrapImage     = "ghcr.io/cscetbon/casskop-bootstrap:0.1.19"
+	defaultBootstrapImage     = "ghcr.io/cscetbon/casskop-bootstrap:0.1.21"
 	defaultConfigBuilderImage = "datastax/cass-config-builder:1.0.4"
 
 	DefaultBackRestImage      = "ghcr.io/cscetbon/instaclustr-icarus:1.1.3"
@@ -1017,6 +1017,7 @@ type CassandraNodeStatus struct {
 // +k8s:openapi-gen=true
 // +kubebuilder:storageversion
 // +kubebuilder:resource:path=cassandraclusters,scope=Namespaced,shortName=cassc;casscs
+// +kubebuilder:subresource:status
 type CassandraCluster struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

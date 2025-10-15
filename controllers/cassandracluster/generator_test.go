@@ -257,7 +257,7 @@ func TestInitContainerConfiguration(t *testing.T) {
 		},
 	})
 
-	cc.Spec.ServerVersion = "3.11.9"
+	cc.Spec.ServerVersion = "3.11.19"
 
 	initEnvVar = initContainerEnvVar(cc, &cc.Status, cassieResources, dcRackName)
 
@@ -578,7 +578,7 @@ func generateExpectedDataStoragePVC(expectedlabels map[string]string, dataCapaci
 				v1.ReadWriteOnce,
 			},
 
-			Resources: v1.ResourceRequirements{
+			Resources: v1.VolumeResourceRequirements{
 				Requests: v1.ResourceList{
 					"storage": expectedDataStorageQuantity,
 				},
@@ -603,7 +603,7 @@ func generateExpectedCassandraLogsStoragePVC(expectedlabels map[string]string) v
 				v1.ReadWriteOnce,
 			},
 
-			Resources: v1.ResourceRequirements{
+			Resources: v1.VolumeResourceRequirements{
 				Requests: v1.ResourceList{
 					"storage": expectedDataStorageQuantity,
 				},
