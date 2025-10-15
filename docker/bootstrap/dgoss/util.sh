@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CASSANDRA_IMAGE=cassandra:3.11.6
+CASSANDRA_IMAGE=cassandra:4.0.18
 CASSANDRA_SEEDS=cassandra-demo-dc1-rack1-0.cassandra-demo.ns,cassandra-demo-dc1-rack2-0.cassandra-demo.ns,cassandra-demo-dc1-rack3-0.cassandra-demo.ns
 CASSANDRA_UID=1000
 CASSANDRA_DC=dc1
